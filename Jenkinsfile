@@ -7,7 +7,7 @@ pipeline {
                 sleep (5)
             }
         }
-        stage ('Test') {
+        stage ('Test Use Case') {
             parallel {
                 stage('Test 1') {
                     steps {
