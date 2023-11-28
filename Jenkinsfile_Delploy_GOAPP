@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DISCORD = credentials('DISCORD')
+    }
     stages {
         stage ('build') {
             agent {
@@ -26,7 +29,6 @@ pipeline {
         stage ('Deploy') {
             environment {
                 GOAPP_SSH_KEY = credentials('goapp_ssh')
-                DISCORD = credentials('DISCORD')
             }
             steps {
                 echo "Deploy App"
@@ -35,16 +37,16 @@ pipeline {
                 sh 'scp -o StrictHostKeyChecking=no -i "$GOAPP_SSH_KEY" golang-sample perdanar@34.128.127.66:~/golang-sample'
                 sh 'ssh -o StrictHostKeyChecking=no -i $GOAPP_SSH_KEY perdanar@34.128.127.66 "sudo systemctl start goapp.service"'
             }
-            post {
-                success {
-                    echo "Post Success"
-                    discordSend description: "Jenkins Pipeline Deploy", footer: "Deploy Success", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$NOTIF"
-                }
-                failure {
-                    echo "Post Failure"
-                    discordSend description: "Jenkins Pipeline Deploy", footer: "Deploy Failure", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$NOTIF"
-                }
-            }
+        }
+    }
+    post {
+        success {
+            echo "Post Success"
+            discordSend description: "Jenkins Pipeline Deploy", footer: "Deploy Success", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$NOTIF"
+        }
+        failure {
+            echo "Post Failure"
+            discordSend description: "Jenkins Pipeline Deploy", footer: "Deploy Failure", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$NOTIF"
         }
     }
 }
