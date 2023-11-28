@@ -1,0 +1,46 @@
+pipeline {
+    agent {
+        label 'fire'
+    }
+    triggers { 
+        upstream(upstreamProjects: 'trigger', threshold: hudson.model.Result.SUCCESS) 
+    }
+    environment {
+        NOTIF = credentials('DISCORD')
+    }
+    stages {
+        stage ('Info') {
+            steps {
+                echo "Build app"
+                sleep (5)
+            }
+        }
+        stage ('Test') {
+            steps {
+                echo "Test App"
+            }
+        }
+        stage ('Deploy') {
+            steps {
+                echo "Deploy App"
+            }
+        }
+    }
+    post {
+        always {
+            echo "Post Always"
+        }
+        success {
+            echo "Post Success"
+            discordSend description: "Jenkins Pipeline Build", footer: "Build Success", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$NOTIF"
+        }
+        aborted {
+            echo "Post Aborted"
+            discordSend description: "Jenkins Pipeline Build", footer: "Build Aborted", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "https://discord.com/api/webhooks/1177251975092506735/u4r8TJw1vOvfQsvapCLMYJYiMMwVM931ihiOZfQBy651Hmuw4Df14z4W_LcEfjSjkIb-"
+        }
+        failure {
+            echo "Post Failure"
+            discordSend description: "Jenkins Pipeline Build", footer: "Build Failure", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "https://discord.com/api/webhooks/1177251975092506735/u4r8TJw1vOvfQsvapCLMYJYiMMwVM931ihiOZfQBy651Hmuw4Df14z4W_LcEfjSjkIb-"
+        }
+    }
+}
