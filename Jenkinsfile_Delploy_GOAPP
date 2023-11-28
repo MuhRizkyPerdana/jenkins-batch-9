@@ -13,7 +13,7 @@ pipeline {
                 sh '''
                  #/bin/sh
                  go version
-                 GOCACHE=/tmp/ go build -o golang-sample main.go
+                 GOCACHE=/tmp/ GOOS=linux GOARCH=386 go build -o golang-sample main.go
                 '''
             }
         }
