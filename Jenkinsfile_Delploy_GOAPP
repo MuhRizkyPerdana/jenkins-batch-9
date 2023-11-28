@@ -15,7 +15,7 @@ pipeline {
                  go version
                  GOCACHE=/tmp/ GOOS=linux GOARCH=386 go build -o golang-sample main.go
                 '''
-                stash includes: 'golang-sample'. name: 'GOAPP_ARTIFACT'
+                stash includes: 'golang-sample', name: 'GOAPP_ARTIFACT'
             }
         }
         stage ('test') {
