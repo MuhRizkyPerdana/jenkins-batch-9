@@ -15,6 +15,7 @@ pipeline {
                  go version
                  GOCACHE=/tmp/ GOOS=linux GOARCH=386 go build -o golang-sample main.go
                 '''
+                stash includes: 'golang-sample'. name: 'GOAPP_ARTIFACT'
             }
         }
         stage ('test') {
@@ -29,6 +30,7 @@ pipeline {
             }
             steps {
                 echo "Deploy App"
+                unstash name: 'GOAPP_ARTIFACT'
                 sh 'scp -o StrictHostKeyChecking=no -i "$GOAPP_SSH_KEY" golang-sample perdanar@34.128.127.66:~/golang-sample'
             }
         }
