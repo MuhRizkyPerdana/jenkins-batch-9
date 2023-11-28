@@ -23,8 +23,13 @@ pipeline {
             }
         }
         stage ('Deploy') {
+            environment {
+                GOAPP_SSH_KEY = credentials('goapp_ssh')
+                DISCORD = credentials('DISCORD')
+            }
             steps {
                 echo "Deploy App"
+                sh 'scp -o StrictHostKeyChecking=no -i "$GOAPP_SSH_KEY" golang-sample perdanar@34.128.127.66:~/golang-sample'
             }
         }
     }
