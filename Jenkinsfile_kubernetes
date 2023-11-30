@@ -7,12 +7,12 @@ pipeline {
             }
             steps {
                 echo "Build App"
-                sh 'docker build -t golang-sample:1 .'
+                sh 'docker build -t gcr.io/studi-devops-370205/studidevsecops/goapp:1 .'
             }
         }
-        stage ('Deploy') {
+        stage ('Push to GCR') {
             steps {
-                echo "Deploy App"
+                echo "docker push gcr.io/studi-devops-370205/studidevsecops:1"
             }
         }
     }
