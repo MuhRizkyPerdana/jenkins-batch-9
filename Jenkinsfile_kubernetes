@@ -32,7 +32,7 @@ pipeline {
         }
         stage ('activate GCP account'){
             environment {
-                GCP_SSH_KEY = credentials('GCP_SSH_PRIVATE_KEY')
+                GCP_SSH_KEY = credentials('rsa-agent-1')
                 GCP_REGISTRY = credentials('gcp_service_account_storage')
                 NOTIF = credentials('DISCORD')
             }
