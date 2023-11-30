@@ -7,12 +7,13 @@ pipeline {
             }
             steps {
                 echo "Build App"
-                sh 'docker build -t gcr.io/studi-devops-370205/studidevsecops/goapp:1 .'
+                sh 'docker build -t gcr.io/studi-devops-370205/studidevsecops:1 .'
             }
         }
         stage ('Push to GCR') {
             steps {
-                echo "docker push gcr.io/studi-devops-370205/studidevsecops/goapp:1"
+                echp "push to gcr"
+                sh 'docker push gcr.io/studi-devops-370205/studidevsecops:1'
             }
         }
     }
