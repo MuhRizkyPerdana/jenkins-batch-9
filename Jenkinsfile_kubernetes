@@ -12,7 +12,7 @@ pipeline {
         }
         stage ('Push to GCR') {
             steps {
-                echp "push to gcr"
+                echo "push to gcr"
                 sh 'docker push gcr.io/studi-devops-370205/studidevsecops:1'
             }
         }
