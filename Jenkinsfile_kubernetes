@@ -12,12 +12,23 @@ pipeline {
         stage ('Push to GCR') {
             environment {
                 GCP_REGISTRY = credentials('gcp_service_account_storage')
+                NOTIF = credentials('DISCORD')
             }
             steps {
                 echo "push to gcr"
                 sh 'cat "$GCP_REGISTRY" | docker login -u _json_key --password-stdin https://gcr.io'
                 sh 'docker push gcr.io/studi-devops-370205/studidevsecops:${BUILD_NUMBER}'
             }
+            post {
+                success {
+                    echo "Post Success"
+                    discordSend description: "Jenkins Pipeline Build", footer: "Build Success", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$DISCORD"
+                }
+                failure {
+                    echo "Post Failure"
+                    discordSend description: "Jenkins Pipeline Build", footer: "Build Failure", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$DISCORD"
+                }
+            }    
         }
     }
 }
