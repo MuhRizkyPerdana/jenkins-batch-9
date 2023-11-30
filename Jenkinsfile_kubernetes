@@ -30,5 +30,12 @@ pipeline {
                 }
             }    
         }
+        stage ('Deploy') {
+            steps {
+                echo "Deploy App"
+                sh 'helm repo add rizky-charts https://adhithia21.github.io/helm-charts/charts'
+                sh 'helm upgrade --install goapp rizky-charts/application'
+            }
+        }
     }
 }
