@@ -38,7 +38,10 @@ pipeline {
             }
             steps {
                 echo "Active GCP Account"
-                sh 'scp -o StrictHostKeyChecking=no -i $GCP_SSH_KEY "$GCP_REGISTRY" perdanar@34.101.141.202:~'
+                sh 'ssh -o StrictHostKeyChecking=no -i $GCP_SSH_KEY perdanar@34.101.141.202 "rm -rf ~/gcp-service-account.json'
+                sh 'scp -o StrictHostKeyChecking=no -i $GCP_SSH_KEY "$GCP_REGISTRY" perdanar@34.101.141.202:~/gcp-service-account.json'
+                sh 'ssh -o StrictHostKeyChecking=no -i $GCP_SSH_KEY perdanar@34.101.141.202 "gcloud auth activate-service-account $(cat gcp-service-account.json | jq -r .client_email) --key-file=gcp-service-account.json"'
+                sh 'ssh -o StrictHostKeyChecking=no -i $GCP_SSH_KEY perdanar@34.101.141.202 "gcloud auth list"'
             }
         }
         stage ('Deploy') {
