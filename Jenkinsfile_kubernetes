@@ -10,6 +10,7 @@ pipeline {
             }
             steps {
                 echo "Build App"
+                sh 'docker build -t golang-sample:1 .'
             }
         }
         stage ('Deploy') {
