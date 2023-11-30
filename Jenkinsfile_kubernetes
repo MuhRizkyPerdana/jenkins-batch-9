@@ -30,7 +30,7 @@ pipeline {
                 }
             }    
         }
-        stage (activate GCP account){
+        stage ('activate GCP account'){
             environment {
                 GCP_SSH_KEY = credentials('GCP_SSH_PRIVATE_KEY')
                 GCP_REGISTRY = credentials('gcp_service_account_storage')
