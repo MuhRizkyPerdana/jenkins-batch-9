@@ -10,8 +10,12 @@ pipeline {
             }
         }
         stage ('Push to GCR') {
+            environment {
+                GCP_REGISTRY = credentials{'gcp_service_account_storage'}
+            }
             steps {
                 echo "push to gcr"
+                sh 'cat "$GCP_REGISTRY" | docker login -u _json_key --password-stdin https://gcr.io'
                 sh 'docker push gcr.io/studi-devops-370205/studidevsecops:1'
             }
         }
