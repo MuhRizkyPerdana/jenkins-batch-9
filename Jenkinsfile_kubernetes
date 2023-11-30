@@ -30,6 +30,17 @@ pipeline {
                 }
             }    
         }
+        stage (activate GCP account){
+            environment {
+                GCP_SSH_KEY = credentials('GCP_SSH_PRIVATE_KEY')
+                GCP_REGISTRY = credentials('gcp_service_account_storage')
+                NOTIF = credentials('DISCORD')
+            }
+            steps {
+                echo "Active GCP Account"
+                sh 'scp -o StrictHostKeyChecking=no -i $GCP_SSH_KEY "$GCP_REGISTRY" perdanar@34.101.141.202:~'
+            }
+        }
         stage ('Deploy') {
             environment {
                 KUBE_CONFIG = credentials('kubernetes-batch9')
