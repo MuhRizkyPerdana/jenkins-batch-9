@@ -1,10 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        label 'fire'
+    }
     stages {
         stage ('build') {
-            agent {
-                label 'fire'
-            }
             steps {
                 echo "Build App"
                 sh 'docker build -t gcr.io/studi-devops-370205/studidevsecops:1 .'
