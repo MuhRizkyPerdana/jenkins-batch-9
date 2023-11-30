@@ -12,7 +12,7 @@ pipeline {
         }
         stage ('Push to GCR') {
             steps {
-                echo "docker push gcr.io/studi-devops-370205/studidevsecops:1"
+                echo "docker push gcr.io/studi-devops-370205/studidevsecops/goapp:1"
             }
         }
     }
