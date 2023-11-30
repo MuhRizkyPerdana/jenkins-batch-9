@@ -56,6 +56,16 @@ pipeline {
                 sh 'helm repo add rizky-charts https://adhithia21.github.io/helm-charts/charts'
                 sh 'helm upgrade --install goapp rizky-charts/application'
             }
+            post {
+                success {
+                    echo "Post Success"
+                    discordSend description: "Jenkins Pipeline Deploy", footer: "Deploy Success ${BUILD_NUMBER}", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$NOTIF"
+                }
+                failure {
+                    echo "Post Failure"
+                    discordSend description: "Jenkins Pipeline Deploy", footer: "Deploy Failure ${BUILD_NUMBER}", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$NOTIF"
+                }
+            }
         }
     }
 }
