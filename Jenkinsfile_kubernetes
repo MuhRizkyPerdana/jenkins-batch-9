@@ -11,7 +11,7 @@ pipeline {
         }
         stage ('Push to GCR') {
             environment {
-                GCP_REGISTRY = credentials{'gcp_service_account_storage'}
+                GCP_REGISTRY = credentials('gcp_service_account_storage')
             }
             steps {
                 echo "push to gcr"
