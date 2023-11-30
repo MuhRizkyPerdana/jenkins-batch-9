@@ -22,11 +22,11 @@ pipeline {
             post {
                 success {
                     echo "Post Success"
-                    discordSend description: "Jenkins Pipeline Build", footer: "Build Success", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$DISCORD"
+                    discordSend description: "Jenkins Pipeline Build", footer: "Build Success ${BUILD_NUMBER}", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$DISCORD"
                 }
                 failure {
                     echo "Post Failure"
-                    discordSend description: "Jenkins Pipeline Build", footer: "Build Failure", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$DISCORD"
+                    discordSend description: "Jenkins Pipeline Build", footer: "Build Failure ${BUILD_NUMBER}", link: env.BUILD_URL, result: currentBuild.currentResult, title: JOB_NAME, webhookURL: "$DISCORD"
                 }
             }    
         }
